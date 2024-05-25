@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const {User} = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -8,8 +8,11 @@ exports.signup = (req, res, next) => {
         (hash) => {
             console.log(hash);
             const user = new User({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
                 email: req.body.email,
-                password: hash
+                password: hash,
+
             });
             user.save().then(
                 () => {
