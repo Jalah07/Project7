@@ -2,6 +2,8 @@ const {User} = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+//TODO DELETE USER
+
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10).then(
         (hash) => {
@@ -48,11 +50,11 @@ exports.login = (req, res, next) => {
                         });
                     }
                     const token = jwt.sign(
-                        { userId: user._id },
+                        { userId: user.id },
                         'RANDOM_TOKEN_SECRET',
                         { expiresIn: '24h' });
                     res.status(200).json({
-                        userId: user._id,
+                        userId: user.id,
                         token: token
                     });
                 }

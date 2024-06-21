@@ -2,11 +2,10 @@ const { Post } = require('../models');
 const fs = require('fs');
 
 exports.createPost = (req, res, next) => {
-    //TODO Update to allow post with no media. No media = json body. Look at P6 modify sauce.
-    const post = new Post(req.file ?{
+    const post = new Post(req.file ? {
         ...JSON.parse(req.body.post),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-    }: { ...JSON.parse(req.body.post) });
+        mediaUrl: `${req.protocol}://${req.get('host')}/media/${req.file.filename}`,
+    } : { ...req.body });
     post.save().then(
         () => {
             res.status(201).json({
@@ -41,21 +40,18 @@ exports.getPost = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
     try {
-        const posts = await Post.findAll(); 
-        res.status(200).json({
-            success: true,
-            data: posts,
-        });
+        const posts = await Post.findAll();
+        res.status(200).json(posts);
     } catch (error) {
-        console.error('Error fetching posts:', error); 
+        console.error('Error fetching posts:', error);
         res.status(500).json({
             success: false,
             message: 'An error occurred while fetching the posts',
-            error: error.message, 
+            error: error.message,
         });
     }
 };
-
+// TODO FIX THE UPDATE POST
 exports.updatePost = async (req, res) => {
     try {
         const postId = req.params.id;
@@ -63,7 +59,7 @@ exports.updatePost = async (req, res) => {
 
         const post = await Post.findOne({ where: { id: postId } });
 
-       
+
         if (!post) {
             return res.status(404).json({
                 success: false,
@@ -71,22 +67,22 @@ exports.updatePost = async (req, res) => {
             });
         }
 
-    
+
         await post.update(updateData);
 
- 
+
         res.status(200).json({
             success: true,
             data: post,
         });
     } catch (error) {
-        console.error('Error updating post:', error); 
+        console.error('Error updating post:', error);
 
-       
+
         res.status(500).json({
             success: false,
             message: 'An error occurred while updating the post',
-            error: error.message, 
+            error: error.message,
         });
     }
 };
@@ -111,7 +107,7 @@ exports.deletePost = async (req, res) => {
             message: 'Post deleted successfully',
         });
     } catch (error) {
-        console.error('Error deleting post:', error); 
+        console.error('Error deleting post:', error);
 
         res.status(500).json({
             success: false,

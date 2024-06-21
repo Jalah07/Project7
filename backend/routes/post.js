@@ -9,7 +9,7 @@ router.post("/", auth, multer, controller.createPost);
 router.get("/:id", auth, controller.getPost);
 router.get("/", auth, controller.getPosts);
 router.put("/:id", auth, multer, controller.updatePost);
-// router.delete("/:id", auth, controller.deleteSauce);
+router.delete("/:id", auth, controller.deletePost);
 // router.post("/:id/like", auth, controller.likeSauce);
 
 module.exports = router;

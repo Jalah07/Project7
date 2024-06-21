@@ -18,10 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     title: DataTypes.STRING,
-    post: DataTypes.STRING,
-    imageUrl: DataTypes.STRING,
+    message: DataTypes.STRING,
+    mediaUrl: DataTypes.STRING,
     userRead: DataTypes.ARRAY(DataTypes.STRING)
-    //TODO usersRead - array that holds numbers of users that read post
   }, {
     sequelize,
     modelName: 'Post',
